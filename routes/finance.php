@@ -322,7 +322,7 @@ function confirmDeposit($pdo, $body, $auth) {
 }
 
 // ============================================================
-// CHECK DEPOSIT STATUS — polling do frontend, retorna status do PagViva
+// CHECK DEPOSIT STATUS — polling do frontend, retorna status normalizado
 // ============================================================
 function checkDepositStatus($pdo, $id, $auth) {
     if (!$auth || empty($auth['id'])) {
@@ -337,8 +337,7 @@ function checkDepositStatus($pdo, $id, $auth) {
     if (count($settingRows) > 0) $pagVivaConfig = json_decode($settingRows[0]['setting_value'], true);
 
     if (!$pagVivaConfig || empty($pagVivaConfig['token']) || empty($pagVivaConfig['secret'])) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Credenciais PagVIVA não configuradas.']);
+        echo json_encode(['status' => 'PENDING']);
         return;
     }
 
@@ -359,7 +358,31 @@ function checkDepositStatus($pdo, $id, $auth) {
     curl_close($ch);
 
     if ($httpCode >= 200 && $httpCode < 300) {
-        echo $response;
+        $data = json_decode($response, true);
+
+        // Normalize: PagViva can return status in different fields
+        // Try all known field names
+        $rawStatus = $data['status'] 
+            ?? $data['transactionStatus'] 
+            ?? $data['statusTransaction'] 
+            ?? $data['payment_status'] 
+            ?? $data['tx_status']
+            ?? 'PENDING';
+
+        $statusUpper = strtoupper((string)$rawStatus);
+
+        // Map to either PAID or PENDING for frontend simplicity
+        $approvedStatuses = ['APPROVED', 'PAID', 'COMPLETED', 'CONCLUIDO', 'PAGO', '1', 'SUCESSO'];
+        $normalizedStatus = in_array($statusUpper, $approvedStatuses) ? 'PAID' : 'PENDING';
+
+        error_log("checkDepositStatus txId=$id rawStatus=$rawStatus normalized=$normalizedStatus");
+
+        // Return normalized response that frontend can always read
+        echo json_encode([
+            'status' => $normalizedStatus,
+            'rawStatus' => $rawStatus,
+            'txId' => $id
+        ]);
     } else {
         echo json_encode(['status' => 'PENDING']);
     }
