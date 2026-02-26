@@ -1,124 +1,109 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>SnakeBet Pro</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700;900&display=swap"
-    rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Space Grotesk', 'sans-serif'],
-          },
-          colors: {
-            neon: {
-              green: '#39ff14',
-              purple: '#bc13fe',
-              blue: '#04d9ff',
-              pink: '#ff00ff',
-              yellow: '#fff01f',
-              dark: '#050505',
-              surface: '#0f0f13',
-              surfaceLight: '#181820'
-            }
-          },
-          animation: {
-            'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'blob': 'blob 7s infinite',
-            'glow': 'glow 2s ease-in-out infinite alternate',
-            'float': 'float 6s ease-in-out infinite',
-            'shimmer': 'shimmer 2s linear infinite',
-          },
-          keyframes: {
-            blob: {
-              '0%': { transform: 'translate(0px, 0px) scale(1)' },
-              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>SnakeBet Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Space Grotesk', 'sans-serif'],
             },
-            glow: {
-              'from': { boxShadow: '0 0 10px #39ff14, 0 0 20px #39ff14' },
-              'to': { boxShadow: '0 0 20px #39ff14, 0 0 30px #39ff14' },
+            colors: {
+              neon: {
+                green: '#39ff14',
+                purple: '#bc13fe',
+                blue: '#04d9ff',
+                pink: '#ff00ff',
+                yellow: '#fff01f',
+                dark: '#050505',
+                surface: '#0f0f13',
+                surfaceLight: '#181820'
+              }
             },
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-20px)' },
+            animation: {
+              'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'blob': 'blob 7s infinite',
+              'glow': 'glow 2s ease-in-out infinite alternate',
+              'float': 'float 6s ease-in-out infinite',
+              'shimmer': 'shimmer 2s linear infinite',
             },
-            shimmer: {
-              '0%': { transform: 'translateX(-100%)' },
-              '100%': { transform: 'translateX(100%)' }
+            keyframes: {
+              blob: {
+                '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                '100%': { transform: 'translate(0px, 0px) scale(1)' },
+              },
+              glow: {
+                'from': { boxShadow: '0 0 10px #39ff14, 0 0 20px #39ff14' },
+                'to': { boxShadow: '0 0 20px #39ff14, 0 0 30px #39ff14' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              shimmer: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' }
+              }
             }
           }
         }
       }
-    }
-  </script>
-  <style>
-    body {
-      background-color: #050505;
-      color: white;
-      overflow-x: hidden;
-      /* Only prevent horizontal scroll */
-      /* overflow: hidden; REMOVED to allow scrolling */
-      /* touch-action: none; REMOVED to allow scrolling */
-    }
-
-    .glass-panel {
-      background: rgba(15, 15, 19, 0.7);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .glass-panel-hover:hover {
-      background: rgba(255, 255, 255, 0.03);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-
-    .text-glow {
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    }
-
-    .text-glow-green {
-      text-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
-    }
-
-    .text-shadow-red {
-      text-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
-    }
-
-    .bg-grid-pattern {
-      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    </script>
+    <style>
+      body {
+        background-color: #050505;
+        color: white;
+        overflow-x: hidden; /* Only prevent horizontal scroll */
+        /* overflow: hidden; REMOVED to allow scrolling */
+        /* touch-action: none; REMOVED to allow scrolling */
+      }
+      .glass-panel {
+        background: rgba(15, 15, 19, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .glass-panel-hover:hover {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      .text-glow {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      }
+      .text-glow-green {
+        text-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+      }
+      .text-shadow-red {
+        text-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+      }
+      .bg-grid-pattern {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #333;
-      border-radius: 10px;
-    }
-  </style>
+        background-size: 40px 40px;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333; 
+        border-radius: 10px;
+      }
+    </style>
   <script type="module" crossorigin src="/assets/index-Bm9MDmEW.js"></script>
 </head>
-
-<body>
-  <div id="root"></div>
+  <body>
+    <div id="root"></div>
 </body>
-
 </html>

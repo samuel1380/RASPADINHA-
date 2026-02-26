@@ -189,9 +189,9 @@ function confirmDeposit($pdo, $body, $auth) {
         }
 
         $jsonResponse = json_decode($response, true);
-        $status = strtoupper($jsonResponse['status'] ?? $jsonResponse['transactionStatus'] ?? '');
+        $statusUpper = strtoupper((string)($jsonResponse['status'] ?? $jsonResponse['transactionStatus'] ?? ''));
 
-        if ($status !== 'PAID' && $status !== 'COMPLETED') {
+        if (!in_array($statusUpper, ['APPROVED', 'PAID', 'COMPLETED', 'CONCLUIDO', 'PAGO', '1', 'SUCESSO'])) {
             echo json_encode(['success' => false, 'message' => 'Pagamento ainda não confirmado.']);
             return;
         }
