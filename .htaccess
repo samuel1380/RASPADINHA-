@@ -1,20 +1,21 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  
+  RewriteBase /
+
   # CRITICAL: Pass Authorization header to PHP (Apache strips it by default)
   RewriteCond %{HTTP:Authorization} .
   RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-  
-  # Roteamento para a API PHP
+
+  # Se o arquivo físico existir, sirva direto (assets, css, js)
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # Roteamento para a API PHP — DEVE vir antes do fallback React
   RewriteRule ^api/(.*)$ api.php [QSA,L]
 
-  # Se o arquivo ou diretório existir, sirva-o (para assets, css, js)
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  
-  # Tudo que não for arquivo físico ou API vai para o index.html (React Router)
+  # Tudo que não for arquivo físico ou API → React Router (index.html)
   RewriteRule ^(.*)$ index.html [L]
 </IfModule>
 
-# Fallback: also try CGI passthrough for Authorization
+# Fallback: also pass Authorization via SetEnvIf
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
